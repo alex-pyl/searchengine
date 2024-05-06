@@ -1,0 +1,12 @@
+package searchengine.dto.site;
+
+import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
+import searchengine.model.SiteModel;
+
+@Mapper(componentModel = "spring")
+public interface SiteMapper {
+    SiteDto convertToDto(SiteModel site);
+
+    SiteModel convertToEntity(SiteDto siteDto);
+}

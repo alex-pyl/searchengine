@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import searchengine.dto.search.SearchResponse;
 import searchengine.dto.statistics.StatisticsResponse;
-import searchengine.utils.Utils;
 import searchengine.services.IndexingService;
 import searchengine.services.SearchService;
 import searchengine.services.StatisticsService;
@@ -33,13 +32,12 @@ public class ApiController {
     public ResponseEntity<StatisticsResponse> statistics() {
         return ResponseEntity.ok(statisticsService.getStatistics());
     }
-    //TODO errors
 
     @GetMapping("/startIndexing")
     public ResponseEntity<?> startIndexing() {
         HashMap<String, Object> result = new HashMap<>();
         String error = indexingService.execute();
-        if (error.isEmpty()) {
+        if (error == null || error.isEmpty()) {
             result.put("result", true);
         } else {
             result.put("result", false);
@@ -52,7 +50,7 @@ public class ApiController {
     public ResponseEntity<?> stopIndexing() {
         HashMap<String, Object> result = new HashMap<>();
         String error = indexingService.stop();
-        if (error.isEmpty()) {
+        if (error == null || error.isEmpty()) {
             result.put("result", true);
         } else {
             result.put("result", false);
@@ -65,12 +63,12 @@ public class ApiController {
     public ResponseEntity<?> indexPage(@RequestParam("url") String url) {
         HashMap<String, Object> result = new HashMap<>();
         String error;
-        if (url.isEmpty()) {
+        if (url == null || url.isEmpty()) {
             error = "Задан пустой поисковый запрос";
         } else {
             error = indexingService.indexPage(url);
         }
-        if (error.isEmpty()) {
+        if (error == null || error.isEmpty()) {
             result.put("result", true);
         } else {
             result.put("result", false);
@@ -89,7 +87,7 @@ public class ApiController {
             limit = DEFAULT_LIMIT;
         }
         SearchResponse result = new SearchResponse();
-        if (query.isEmpty()) {
+        if (query == null || query.isEmpty()) {
             result.setError("Задан пустой поисковый запрос");
         } else {
             result = searchService.doSearch(query, offset, limit, site.orElse(""));

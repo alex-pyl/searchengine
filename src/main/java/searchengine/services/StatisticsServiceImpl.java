@@ -13,13 +13,11 @@ import searchengine.dto.statistics.TotalStatistics;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class StatisticsServiceImpl implements StatisticsService {
 
-    private final Random random = new Random();
     private final SitesList sites;
     private final SiteService siteService;
     private final PageService pageService;

@@ -3,11 +3,9 @@ package searchengine.indexing;
 import lombok.RequiredArgsConstructor;
 import searchengine.config.ConnectConfig;
 import searchengine.config.Site;
-import searchengine.config.SitesList;
 import searchengine.dto.site.SiteDto;
 import searchengine.model.SiteStatus;
 import searchengine.services.IndexingService;
-import searchengine.services.IndexingServiceImpl;
 import searchengine.services.PageService;
 import searchengine.services.SiteService;
 
@@ -29,11 +27,12 @@ public class RunIndexing implements Runnable {
         SiteDto siteDto = siteService.create(site, SiteStatus.INDEXING);
         try {
             String result = new ForkJoinPool().invoke(new SiteProcessor(siteDto.getUrl(), config, siteDto, pageService, siteService, indexingService));
-            if (result == null) {
+            if (result == null || result.isEmpty()) {
                 siteService.updateStatus(siteDto, SiteStatus.INDEXED);
             } else {
                 siteService.putError(siteDto, result);
             }
+            System.out.println("Finish = " + site.getUrl());
         } catch (CancellationException e) {
             System.out.println("Cancel = " + site.getUrl());
         }

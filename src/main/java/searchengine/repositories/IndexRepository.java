@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 import searchengine.model.Index;
 import searchengine.model.Lemma;
 import searchengine.model.Page;
-import searchengine.model.SiteModel;
 
 import java.util.List;
 

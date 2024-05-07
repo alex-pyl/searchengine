@@ -26,11 +26,11 @@ public class SearchService {
     public SearchResponse doSearch(String query, int offset, int limit, String url) {
         SearchResponse response = new SearchResponse();
         response.setResult(false);
-        if (query.isEmpty()) {
+        if (query == null || query.isEmpty()) {
             return response;
         }
         SiteDto siteDto;
-        if (!url.isEmpty()) {
+        if (url != null && !url.isEmpty()) {
             siteDto = siteService.findByUrl(url);
         } else {
             siteDto = null;

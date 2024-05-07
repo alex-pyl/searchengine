@@ -1,17 +1,11 @@
 package searchengine.indexing;
 
 import lombok.RequiredArgsConstructor;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import searchengine.config.ConnectConfig;
 import searchengine.dto.site.PageDto;
 import searchengine.dto.site.SiteDto;
 import searchengine.model.SiteStatus;
 import searchengine.services.IndexingService;
-import searchengine.services.IndexingServiceImpl;
 import searchengine.services.PageService;
 import searchengine.services.SiteService;
 import searchengine.utils.Utils;
@@ -20,8 +14,6 @@ import searchengine.utils.WebResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RecursiveTask;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 public class SiteProcessor  extends RecursiveTask<String> {
@@ -54,7 +46,7 @@ public class SiteProcessor  extends RecursiveTask<String> {
             return e.getMessage();
         }
         WebResponse response = Utils.connect(config, url);
-        if (!response.getError().isEmpty()) {
+        if (response.getError() != null) {
             pageService.updateResponse(pageDto, -1, response.getError());
             return "Ошибка подключения по адресу " + url + ": " + response.getError();
         }

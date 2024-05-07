@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 public class Utils {
     private static LuceneMorphology luceneMorph;
     private static final String RUSSIAN = "[^А-Яа-яёЁ]+";
-    private static final String TAG_SCRIPT = "<script\\b[^<]*(?:(?!<\\/script>)<[^<]*)*<\\/script\\s*>";
-    private static final String TAG_STYLE = "<style\\b[^<]*(?:(?!<\\/style>)<[^<]*)*<\\/style\\s*>";
+    private static final String TAG_SCRIPT = "<script\\b[^<]*(?:(?!</script>)<[^<]*)*</script\\s*>";
+    private static final String TAG_STYLE = "<style\\b[^<]*(?:(?!</style>)<[^<]*)*</style\\s*>";
     private static final String TAG_ANY = "<[^>]*>";
     private static final String WHITESPACE = "\\s+";
     private static final List<String> SERVICE_PARTS = List.of("МЕЖД", "ПРЕДЛ", "СОЮЗ", "ЧАСТ");
-    private static final int SNIPPET_LENGTH = 140;
+    private static final int SNIPPET_LENGTH = 125;
 
     public static void setLuceneMorph() throws IOException {
         if (luceneMorph == null) {
@@ -31,7 +31,7 @@ public class Utils {
         String[] words = text.toLowerCase().split(RUSSIAN);
         setLuceneMorph();
         for (String word : words) {
-            if (!word.isEmpty()) {
+            if (word != null && !word.isEmpty()) {
                 List<String> wordBaseForms = luceneMorph.getMorphInfo(word);
                 if (wordBaseForms.stream().flatMap(w -> Arrays.stream(w.split(" "))).noneMatch(SERVICE_PARTS::contains)) {
                     result.addAll(luceneMorph.getNormalForms(word));

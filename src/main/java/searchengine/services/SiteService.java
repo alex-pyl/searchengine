@@ -1,9 +1,6 @@
 package searchengine.services;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 import searchengine.config.Site;
 import searchengine.dto.site.SiteDto;
@@ -13,7 +10,6 @@ import searchengine.model.SiteStatus;
 import searchengine.repositories.SiteRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +18,7 @@ import java.util.regex.Pattern;
 public class SiteService {
     private final SiteRepository repository;
     private final SiteMapper mapper;
-    private static final String SITE_ROOT = "(https?:\\/\\/)(www\\.)?([^\\/]+)";
+    private static final String SITE_ROOT = "(https?://)(www\\.)?([^/]+)";
 
     public void delete(Site site) {
         SiteModel model = repository.findByUrl(site.getUrl());

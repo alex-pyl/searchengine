@@ -3,13 +3,10 @@ package searchengine.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import searchengine.dto.site.*;
-import searchengine.model.Lemma;
-import searchengine.model.SiteModel;
 import searchengine.repositories.LemmaRepository;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service

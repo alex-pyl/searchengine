@@ -7,7 +7,6 @@ import searchengine.dto.site.PageMapper;
 import searchengine.dto.site.SiteDto;
 import searchengine.dto.site.SiteMapper;
 import searchengine.model.Page;
-import searchengine.model.SiteModel;
 import searchengine.repositories.PageRepository;
 
 @Service

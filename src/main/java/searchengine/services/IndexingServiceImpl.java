@@ -1,9 +1,6 @@
 package searchengine.services;
 
 import lombok.RequiredArgsConstructor;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 import searchengine.config.ConnectConfig;
 import searchengine.config.Site;
@@ -15,7 +12,6 @@ import searchengine.indexing.RunIndexing;
 import searchengine.utils.Utils;
 import searchengine.utils.WebResponse;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -45,9 +41,7 @@ public class IndexingServiceImpl implements IndexingService {
             }
             setShutdown(false);
             executor = Executors.newFixedThreadPool(sites.getSites().size());
-            sites.getSites().forEach(site -> {
-                executor.execute(new RunIndexing(site, config, siteService, pageService, this));
-            });
+            sites.getSites().forEach(site -> executor.execute(new RunIndexing(site, config, siteService, pageService, this)));
             executor.shutdown();
         } catch (Exception e) {
             return "Ошибка при распараллеливании индексации: " + e.getMessage();
@@ -83,10 +77,10 @@ public class IndexingServiceImpl implements IndexingService {
         Site site = seekSite.get();
         SiteDto siteDto = siteService.findByUrl(site.getUrl());
         WebResponse response = Utils.connect(config, url);
-        if (!response.getError().isEmpty()) {
+        if (response.getError() != null && !response.getError().isEmpty()) {
             return "Ошибка подключения по адресу " + url + ": " + response.getError();
         }
-        PageDto pageDto = new PageDto();
+        PageDto pageDto;
         try {
             pageService.delete(url);
             pageDto = pageService.create(siteDto, url, response.getStatus(), response.getDocument().html());

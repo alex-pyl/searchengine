@@ -3,7 +3,6 @@ package searchengine.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import searchengine.dto.site.*;
-import searchengine.model.Lemma;
 import searchengine.repositories.IndexRepository;
 
 import java.util.List;
@@ -20,9 +19,9 @@ public class IndexService {
         return repository.findAllByPage(pageMapper.convertToEntity(pageDto)).stream().map(mapper::convertToDto).toList();
     }
 
-    public IndexDto create(PageDto pageDto, LemmaDto lemmaDto, Long rank) {
+    public void create(PageDto pageDto, LemmaDto lemmaDto, Long rank) {
         IndexDto indexDto = new IndexDto(null, pageDto, lemmaDto, rank);
-        return mapper.convertToDto(repository.save(mapper.convertToEntity(indexDto)));
+        repository.save(mapper.convertToEntity(indexDto));
     }
 
     public int countByLemma(LemmaDto lemma) {

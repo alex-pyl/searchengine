@@ -26,16 +26,20 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public StatisticsResponse getStatistics() {
         TotalStatistics total = new TotalStatistics();
-        total.setSites(sites.getSites().size());
+        int siteCount = 0;
         total.setIndexing(true);
 
         List<DetailedStatisticsItem> detailed = new ArrayList<>();
         List<Site> sitesList = sites.getSites();
         for (Site site : sitesList) {
+            SiteDto siteDto = siteService.findByUrl(site.getUrl());
+            if(siteDto == null){
+                continue;
+            }
+            siteCount++;
             DetailedStatisticsItem item = new DetailedStatisticsItem();
             item.setName(site.getName());
             item.setUrl(site.getUrl());
-            SiteDto siteDto = siteService.findByUrl(site.getUrl());
             int pages = pageService.countBySiteId(siteDto);
             int lemmas = lemmaService.countBySiteId(siteDto);
             item.setPages(pages);
@@ -47,7 +51,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             total.setLemmas(total.getLemmas() + lemmas);
             detailed.add(item);
         }
-
+        total.setSites(siteCount);
         StatisticsResponse response = new StatisticsResponse();
         StatisticsData data = new StatisticsData();
         data.setTotal(total);

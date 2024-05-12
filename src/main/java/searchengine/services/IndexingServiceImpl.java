@@ -26,7 +26,7 @@ public class IndexingServiceImpl implements IndexingService {
     private final LemmaService lemmaService;
     private final IndexService indexService;
     private static ExecutorService executor;
-    private static boolean shutdown;
+    private static volatile boolean shutdown;
 
     public static void setShutdown(boolean shutdown) {
         IndexingServiceImpl.shutdown = shutdown;
